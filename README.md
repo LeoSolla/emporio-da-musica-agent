@@ -216,8 +216,8 @@ I used **Claude Code** (Anthropic's agentic coding tool, running in the terminal
 
 Workflow:
 
-1. **Analysis first.** Claude Code read the challenge, the CSVs and the policy PDF and listed the data inconsistencies (the table above). I decided how to treat each one.
-2. **Plan, then step-by-step build.** We agreed on the architecture before writing code. Each step (data layer, policy manual, tools, agent loop, history, evals, examples, README) was built, tested and committed separately, and I approved the next step only after reviewing the previous one. The commit history reflects that sequence.
+1. **Analysis first.** Claude Code read the challenge, the CSVs and the policy PDF and listed the data inconsistencies (the table above). Claude Code proposed how to treat each one, and I approved the approach.
+2. **Plan, then step-by-step build.** We agreed on the architecture before writing code. Each step (data layer, policy manual, tools, agent loop, history, evals, examples, README) was built, tested and committed separately, and I approved each step before moving to the next, based on the test results and the agent's live replies. The commit history reflects that sequence.
 3. **Tests as the contract.** Each module came with unit tests written alongside the code, including one test per data inconsistency. The behavior evals were run against the real model, and the actual replies were read, not only the pass count.
 4. **Live verification.** Changes were checked by running the agent and reading its replies. For example, the first live run showed the model making a second search because results were capped at 10, and printing raw markdown in the terminal. Both were fixed before the agent loop was committed.
 
