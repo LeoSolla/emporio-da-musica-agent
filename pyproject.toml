@@ -1,0 +1,27 @@
+[project]
+name = "emporio-agent"
+version = "0.1.0"
+description = "Customer service agent prototype for Empório da Música"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "pypdf>=4.0",
+    "anthropic>=0.40",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+emporio-agent = "emporio_agent.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
