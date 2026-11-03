@@ -29,7 +29,7 @@ Full conversations are in [`examples/`](examples/).
 Requirements: Python 3.11+ and an [Anthropic API key](https://console.anthropic.com/).
 
 ```bash
-git clone <this repository>
+git clone https://github.com/LeoSolla/emporio-da-musica-agent.git
 cd emporio-da-musica-agent
 python3 -m venv .venv
 source .venv/bin/activate
