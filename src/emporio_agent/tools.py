@@ -193,7 +193,7 @@ class ToolBox:
                         on_sale=False, include_unavailable=False) -> dict:
         return self.store.search_products(
             query=query, category=category, max_price=max_price, min_price=min_price,
-            on_sale=on_sale, only_available=not include_unavailable,
+            on_sale=on_sale, only_available=not include_unavailable, limit=20,
         )
 
     def get_product_details(self, product_id: int) -> dict:
