@@ -15,6 +15,7 @@ from zoneinfo import ZoneInfo
 import anthropic
 
 from .data_store import StoreData
+from .memory import ConversationStore
 from .policies import PolicyManual
 from .prompts import SYSTEM_PROMPT
 from .tools import ToolBox
@@ -68,6 +69,8 @@ class Agent:
         model: str | None = None,
         effort: str = "medium",
         messages: list[dict] | None = None,
+        memory: ConversationStore | None = None,
+        session_id: str | None = None,
     ):
         self.toolbox = toolbox
         self.client = client or anthropic.Anthropic()
@@ -76,6 +79,11 @@ class Agent:
         # Full history in API format. Assistant content is stored exactly as
         # returned (thinking blocks included): the history is append-only.
         self.messages: list[dict] = messages if messages is not None else []
+        # Optional persistence: history is loaded from and appended to SQLite.
+        self.memory = memory
+        self.session_id = session_id
+        if memory is not None and session_id is not None and messages is None:
+            self.messages = memory.load(session_id)
 
     @classmethod
     def from_defaults(cls, **kwargs) -> "Agent":
@@ -100,6 +108,12 @@ class Agent:
         )
 
     def chat(self, user_text: str) -> Turn:
+        turn = self._run(user_text)
+        if self.memory is not None and self.session_id is not None:
+            self.memory.save_new(self.session_id, self.messages)
+        return turn
+
+    def _run(self, user_text: str) -> Turn:
         self.messages.append({"role": "user", "content": user_text})
         turn = Turn(reply="")
 
